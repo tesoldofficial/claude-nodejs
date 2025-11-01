@@ -1,0 +1,34 @@
+{
+  "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
+  "name": "claude-nodejs",
+  "version": "1.0.0",
+  "description": "Professional project management and worktree tools for Node.js development with Claude Code",
+  "owner": {
+    "name": "tesold",
+    "email": "tesoldofficial@gmail.com"
+  },
+  "plugins": [
+    {
+      "name": "tasks-execution",
+      "description": "Complete project documentation and task development workflow with 8-phase execution, branch-aware design, auto-generated tests, and worktree synchronization",
+      "version": "1.0.0",
+      "author": {
+        "name": "tesold",
+        "email": "tesoldofficial@gmail.com"
+      },
+      "source": "./plugins/tasks-execution",
+      "category": "development"
+    },
+    {
+      "name": "worktree",
+      "description": "Git worktree management with automatic environment configuration, PORT conflict resolution, and .claude directory synchronization",
+      "version": "1.0.0",
+      "author": {
+        "name": "tesold",
+        "email": "tesoldofficial@gmail.com"
+      },
+      "source": "./plugins/worktree",
+      "category": "productivity"
+    }
+  ]
+}
