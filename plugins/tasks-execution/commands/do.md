@@ -640,7 +640,7 @@ Update TASK.md with complete specification:
 
 '''
 Task tool with:
-  subagent_type: system-designer
+  subagent_type: tasks-execution:system-designer
   description: "Design system for {task-name}"
   prompt: "
     Design technical architecture for the following task.
@@ -697,7 +697,7 @@ Agent output → '.claude-project/tasks/{task-name}/SYSTEM-DESIGN.md'
 
 '''
 Task tool with:
-  subagent_type: code-implementer
+  subagent_type: tasks-execution:code-implementer
   description: "Implement {task-name}"
   prompt: "
     Implement the feature per the following specifications:
