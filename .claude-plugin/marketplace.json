@@ -1,7 +1,7 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "claude-nodejs",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Professional project management and worktree tools for Node.js development with Claude Code",
   "owner": {
     "name": "tesold",
@@ -11,7 +11,7 @@
     {
       "name": "tasks-execution",
       "description": "Complete project documentation and task development workflow with 8-phase execution, branch-aware design, auto-generated tests, and worktree synchronization",
-      "version": "1.0.0",
+      "version": "2.0.0",
       "author": {
         "name": "tesold",
         "email": "tesoldofficial@gmail.com"

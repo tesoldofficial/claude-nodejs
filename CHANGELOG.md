@@ -5,6 +5,35 @@ All notable changes to claude-nodejs marketplace will be documented in this file
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [2.0.0] - 2025-11-01
+
+### Added
+
+#### tasks-execution Plugin v2.0.0
+
+**Agents**:
+- Added `bug-hunter-analyzer` agent to plugin (model: sonnet)
+- Added `code-cleanliness-reviewer` agent to plugin (model: sonnet)
+- Plugin now includes all 5 agents needed for complete workflow
+
+**Fixes**:
+- Fixed all command references to use plugin prefix (`/tasks-execution:init-project`, `/tasks-execution:do`, `/tasks-execution:tasks`)
+- Fixed all agent calls to use plugin prefix (`tasks-execution:system-designer`, etc.)
+- Removed all backticks from command files (Claude Code execution conflicts)
+- Replaced JavaScript template literals with plain strings
+
+**Improvements**:
+- Plugin is now fully self-contained (no external agent dependencies)
+- All 5 agents use `model: sonnet` for compatibility
+- Command invocations properly prefixed for plugin context
+
+### Breaking Changes
+
+- Agent calls now require plugin prefix when used from plugin
+- Command syntax updated to include plugin prefix in examples
+
+---
+
 ## [1.0.0] - 2025-11-01
 
 ### Added

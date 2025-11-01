@@ -1,6 +1,6 @@
 {
   "name": "tasks-execution",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "Complete project documentation and task development workflow with 8-phase execution, branch-aware design, auto-generated tests, and worktree synchronization",
   "author": {
     "name": "tesold",
