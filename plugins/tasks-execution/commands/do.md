@@ -776,9 +776,9 @@ let iteration = 1;
 const MAX_ITERATIONS = 5;
 
 while (iteration <= MAX_ITERATIONS) {
-  console.log(`\n${'='.repeat(60)}`);
-  console.log(`🐛 Bug Hunting - Iteration ${iteration}`);
-  console.log(${'='.repeat(60)}\n`);
+  console.log('\n${'='.repeat(60)}');
+  console.log('🐛 Bug Hunting - Iteration ${iteration}');
+  console.log(${'='.repeat(60)}\n');
 
   // Step 1: Run bug-hunter-analyzer
   bugReport = Task(
@@ -808,25 +808,25 @@ while (iteration <= MAX_ITERATIONS) {
   );
 
   // Step 2: Save report
-  saveBugReport(`.claude-project/tasks/{task-name}/BUGS-ITERATION-${iteration}.md`);
+  saveBugReport(`.claude-project/tasks/{task-name}/BUGS-ITERATION-${iteration}.md');
 
   // Step 3: Parse bug counts
   const p0Count = bugReport.criticalBugs.length;
   const p1Count = bugReport.highPriorityBugs.length;
   const p2Count = bugReport.mediumPriorityBugs.length;
 
-  console.log(`\nBugs found:`);
-  console.log(`  P0 (Critical): ${p0Count}`);
-  console.log(`  P1 (High):     ${p1Count}`);
-  console.log(`  P2 (Medium):   ${p2Count}`);
+  console.log('\nBugs found:');
+  console.log('  P0 (Critical): ${p0Count}');
+  console.log('  P1 (High):     ${p1Count}');
+  console.log('  P2 (Medium):   ${p2Count}');
 
   // Step 4: Check if P0 bugs exist
   if (p0Count === 0) {
-    console.log(`\n✅ No critical bugs found!`);
+    console.log('\n✅ No critical bugs found!');
 
     if (p1Count > 0 || p2Count > 0) {
-      console.log(`ℹ️  ${p1Count} P1 and ${p2Count} P2 bugs documented but not blocking.`);
-      console.log(`   See BUGS-ITERATION-${iteration}.md for details.`);
+      console.log('ℹ️  ${p1Count} P1 and ${p2Count} P2 bugs documented but not blocking.');
+      console.log('   See BUGS-ITERATION-${iteration}.md for details.');
     }
 
     // Update SUMMARY.md with final iteration
@@ -844,13 +844,13 @@ while (iteration <= MAX_ITERATIONS) {
       - P2 bugs: ${p2Count} (documented in BUGS-ITERATION-${iteration}.md)
 
       **Next Phase**: Code Cleanliness Review (Phase 4)
-    `);
+    ');
 
     break; // Exit loop - no P0 bugs
   }
 
   // Step 5: Fix P0 bugs
-  console.log(`\n🔧 Fixing ${p0Count} critical bugs...`);
+  console.log('\n🔧 Fixing ${p0Count} critical bugs...');
 
   Task(
     subagent_type: 'code-implementer',
@@ -866,7 +866,7 @@ while (iteration <= MAX_ITERATIONS) {
     `
   );
 
-  console.log(`✅ P0 bugs fixed (iteration ${iteration})`);
+  console.log('✅ P0 bugs fixed (iteration ${iteration})');
 
   // Update SUMMARY.md with iteration progress
   updateSummary(`
@@ -874,16 +874,16 @@ while (iteration <= MAX_ITERATIONS) {
     - Bugs found: ${p0Count} P0, ${p1Count} P1, ${p2Count} P2
     - Action: Fixed ${p0Count} P0 bugs
     - Report: BUGS-ITERATION-${iteration}.md
-  `);
+  ');
 
   // Step 6: Increment and continue
   iteration++;
 
   if (iteration > MAX_ITERATIONS) {
-    console.error(`\n❌ WARNING: Reached maximum bug-fix iterations (${MAX_ITERATIONS})!`);
-    console.error(`   Some P0 bugs may still remain.`);
-    console.error(`   Manual review recommended.`);
-    console.error(`   See BUGS-ITERATION-${iteration-1}.md for remaining issues.`);
+    console.error('\n❌ WARNING: Reached maximum bug-fix iterations (${MAX_ITERATIONS})!');
+    console.error('   Some P0 bugs may still remain.');
+    console.error('   Manual review recommended.');
+    console.error('   See BUGS-ITERATION-${iteration-1}.md for remaining issues.');
 
     updateSummary(`
       ## Phase 3: Bug Hunting ⚠️ (INCOMPLETE)
@@ -894,7 +894,7 @@ while (iteration <= MAX_ITERATIONS) {
       ⚠️  MANUAL REVIEW REQUIRED
 
       See BUGS-ITERATION-${iteration-1}.md for details.
-    `);
+    ');
 
     break;
   }
@@ -950,7 +950,7 @@ Output → `.claude-project/tasks/{task-name}/CLEANLINESS.md`
 
 ```javascript
 if (cleanlinessReport.criticalIssues.length > 0) {
-  console.log(`\n🧹 Fixing ${cleanlinessReport.criticalIssues.length} critical cleanliness issues...`);
+  console.log('\n🧹 Fixing ${cleanlinessReport.criticalIssues.length} critical cleanliness issues...');
 
   Task(
     subagent_type: 'code-implementer',
@@ -964,11 +964,11 @@ if (cleanlinessReport.criticalIssues.length > 0) {
     `
   );
 
-  console.log(`✅ Critical cleanliness issues fixed`);
+  console.log('✅ Critical cleanliness issues fixed');
 }
 
 if (cleanlinessReport.mediumIssues.length > 0) {
-  console.log(`ℹ️  ${cleanlinessReport.mediumIssues.length} medium cleanliness issues documented but not blocking.`);
+  console.log('ℹ️  ${cleanlinessReport.mediumIssues.length} medium cleanliness issues documented but not blocking.');
 }
 ```
 
@@ -1073,19 +1073,19 @@ async function uploadFile(token, endpoint, filePath, fieldName = 'file') {
 // Assertions
 function assert(condition, message) {
   if (!condition) {
-    throw new Error(`Assertion failed: ${message}`);
+    throw new Error(`Assertion failed: ${message}');
   }
 }
 
 function assertEqual(actual, expected, message) {
   if (actual !== expected) {
-    throw new Error(`${message}\nExpected: ${expected}\nActual: ${actual}`);
+    throw new Error(`${message}\nExpected: ${expected}\nActual: ${actual}');
   }
 }
 
 function assertContains(object, key, value) {
   if (object[key] !== value) {
-    throw new Error(`Expected ${key} to be ${value}, got ${object[key]}`);
+    throw new Error(`Expected ${key} to be ${value}, got ${object[key]}');
   }
 }
 
@@ -1117,9 +1117,9 @@ const testFiles = fs.readdirSync(__dirname)
   .filter(file => /^\d{2}-.+\.js$/.test(file))
   .sort();
 
-console.log(`\n${'='.repeat(60)}`);
-console.log(`Running ${testFiles.length} test files sequentially`);
-console.log(${'='.repeat(60)}\n`);
+console.log('\n${'='.repeat(60)}');
+console.log('Running ${testFiles.length} test files sequentially');
+console.log(${'='.repeat(60)}\n');
 
 let passed = 0;
 let failed = 0;
@@ -1145,13 +1145,13 @@ async function runTest(file) {
     await runTest(file);
   }
 
-  console.log(`\n${'='.repeat(60)}`);
-  console.log(`TEST SUMMARY`);
-  console.log(${'='.repeat(60)}`);
-  console.log(`Total: ${testFiles.length}`);
-  console.log(`Passed: ${passed} ✅`);
-  console.log(`Failed: ${failed} ❌`);
-  console.log(${'='.repeat(60)}\n`);
+  console.log('\n${'='.repeat(60)}');
+  console.log('TEST SUMMARY');
+  console.log(${'='.repeat(60)}');
+  console.log('Total: ${testFiles.length}');
+  console.log('Passed: ${passed} ✅');
+  console.log('Failed: ${failed} ❌');
+  console.log(${'='.repeat(60)}\n');
 
   process.exit(failed > 0 ? 1 : 0);
 })();
@@ -1361,7 +1361,7 @@ if (exitCode === 0) {
     All acceptance criteria verified.
 
     **Next Phase**: Final Summary (Phase 8)
-  `);
+  ');
 
 } else {
   // Some tests failed
@@ -1381,7 +1381,7 @@ if (exitCode === 0) {
     ${failedTests.map(t => `- ${t.name}: ${t.error}`).join('\n')}
 
     **Next Phase**: Fix Planning (Phase 7)
-  `);
+  ');
 }
 ```
 
@@ -1408,9 +1408,9 @@ let fixIteration = 1;
 const MAX_FIX_ITERATIONS = 3;
 
 while (fixIteration <= MAX_FIX_ITERATIONS) {
-  console.log(`\n${'='.repeat(60)}`);
-  console.log(`🔧 Test Fix - Iteration ${fixIteration}`);
-  console.log(${'='.repeat(60)}\n`);
+  console.log('\n${'='.repeat(60)}');
+  console.log('🔧 Test Fix - Iteration ${fixIteration}');
+  console.log(${'='.repeat(60)}\n');
 
   // Step 1: Analyze test failures
   console.log('📊 Analyzing test failures...\n');
@@ -1425,13 +1425,13 @@ while (fixIteration <= MAX_FIX_ITERATIONS) {
   // Step 2: Create fix plan
   const fixPlan = createFixPlan(analysisReport);
 
-  saveFixPlan(`.claude-project/tasks/{task-name}/TEST-FIX-PLAN-${fixIteration}.md`);
+  saveFixPlan(`.claude-project/tasks/{task-name}/TEST-FIX-PLAN-${fixIteration}.md');
 
   console.log('\n📋 Fix Plan Created:');
-  console.log(`\nProblems Identified: ${fixPlan.problems.length}`);
+  console.log('\nProblems Identified: ${fixPlan.problems.length}');
   fixPlan.problems.forEach((p, i) => {
-    console.log(`  ${i+1}. ${p.test}: ${p.issue}`);
-    console.log(`     → Fix: ${p.proposedFix}`);
+    console.log('  ${i+1}. ${p.test}: ${p.issue}');
+    console.log('     → Fix: ${p.proposedFix}');
   });
 
   // Step 3: Use TodoWrite to show plan to user
@@ -1486,20 +1486,20 @@ while (fixIteration <= MAX_FIX_ITERATIONS) {
       ${fixIterationHistory}
 
       **Next Phase**: Final Summary (Phase 8)
-    `);
+    ');
 
     break; // Exit loop - tests pass
 
   } else {
-    console.log(`\n⚠️  ${parseFailedTestCount(testOutput)} tests still failing\n`);
+    console.log('\n⚠️  ${parseFailedTestCount(testOutput)} tests still failing\n');
 
     fixIteration++;
 
     if (fixIteration > MAX_FIX_ITERATIONS) {
-      console.error(`\n❌ WARNING: Reached maximum test-fix iterations (${MAX_FIX_ITERATIONS})!`);
-      console.error(`   Some tests still failing.`);
-      console.error(`   Manual debugging recommended.`);
-      console.error(`   See TEST-FIX-PLAN-${fixIteration-1}.md for analysis.`);
+      console.error('\n❌ WARNING: Reached maximum test-fix iterations (${MAX_FIX_ITERATIONS})!');
+      console.error('   Some tests still failing.');
+      console.error('   Manual debugging recommended.');
+      console.error('   See TEST-FIX-PLAN-${fixIteration-1}.md for analysis.');
 
       updateSummary(`
         ## Phase 7: Test Fix ⚠️ (INCOMPLETE)
@@ -1510,7 +1510,7 @@ while (fixIteration <= MAX_FIX_ITERATIONS) {
         ⚠️  MANUAL DEBUGGING REQUIRED
 
         See TEST-FIX-PLAN-${fixIteration-1}.md for last analysis.
-      `);
+      ');
 
       break;
     }
