@@ -1,0 +1,9 @@
+{
+  "name": "worktree",
+  "version": "1.0.0",
+  "description": "Git worktree management with automatic environment configuration, PORT conflict resolution, and .claude directory synchronization",
+  "author": {
+    "name": "tesold",
+    "email": "tesoldofficial@gmail.com"
+  }
+}
