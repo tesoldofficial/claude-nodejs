@@ -776,14 +776,14 @@ let iteration = 1;
 const MAX_ITERATIONS = 5;
 
 while (iteration <= MAX_ITERATIONS) {
-  console.log('\n${'='.repeat(60)}');
-  console.log('🐛 Bug Hunting - Iteration ${iteration}');
-  console.log(${'='.repeat(60)}\n');
+  console.log('\n====...');
+  console.log('🐛 Bug Hunting - Iteration ITERATION_NUM');
+  console.log(====...\n');
 
   // Step 1: Run bug-hunter-analyzer
   bugReport = Task(
     subagent_type: 'bug-hunter-analyzer',
-    description: `Analyze code for {task-name} iteration ${iteration}`,
+    description: `Analyze code for {task-name} iteration ITERATION_NUM`,
     prompt: `
       Analyze code changes for this task relative to parent branch.
 
@@ -808,7 +808,7 @@ while (iteration <= MAX_ITERATIONS) {
   );
 
   // Step 2: Save report
-  saveBugReport(`.claude-project/tasks/{task-name}/BUGS-ITERATION-${iteration}.md');
+  saveBugReport(`.claude-project/tasks/{task-name}/BUGS-ITERATION-ITERATION_NUM.md');
 
   // Step 3: Parse bug counts
   const p0Count = bugReport.criticalBugs.length;
@@ -816,32 +816,32 @@ while (iteration <= MAX_ITERATIONS) {
   const p2Count = bugReport.mediumPriorityBugs.length;
 
   console.log('\nBugs found:');
-  console.log('  P0 (Critical): ${p0Count}');
-  console.log('  P1 (High):     ${p1Count}');
-  console.log('  P2 (Medium):   ${p2Count}');
+  console.log('  P0 (Critical): P0_COUNT');
+  console.log('  P1 (High):     P1_COUNT');
+  console.log('  P2 (Medium):   P2_COUNT');
 
   // Step 4: Check if P0 bugs exist
   if (p0Count === 0) {
     console.log('\n✅ No critical bugs found!');
 
     if (p1Count > 0 || p2Count > 0) {
-      console.log('ℹ️  ${p1Count} P1 and ${p2Count} P2 bugs documented but not blocking.');
-      console.log('   See BUGS-ITERATION-${iteration}.md for details.');
+      console.log('ℹ️  P1_COUNT P1 and P2_COUNT P2 bugs documented but not blocking.');
+      console.log('   See BUGS-ITERATION-ITERATION_NUM.md for details.');
     }
 
     // Update SUMMARY.md with final iteration
     updateSummary(`
       ## Phase 3: Bug Hunting ✅
 
-      **Total Iterations**: ${iteration}
+      **Total Iterations**: ITERATION_NUM
       **Final Status**: No critical bugs
 
       **Iteration History**:
       ${iterationHistory}
 
       **Remaining Issues**:
-      - P1 bugs: ${p1Count} (documented in BUGS-ITERATION-${iteration}.md)
-      - P2 bugs: ${p2Count} (documented in BUGS-ITERATION-${iteration}.md)
+      - P1 bugs: P1_COUNT (documented in BUGS-ITERATION-ITERATION_NUM.md)
+      - P2 bugs: P2_COUNT (documented in BUGS-ITERATION-ITERATION_NUM.md)
 
       **Next Phase**: Code Cleanliness Review (Phase 4)
     ');
@@ -850,15 +850,15 @@ while (iteration <= MAX_ITERATIONS) {
   }
 
   // Step 5: Fix P0 bugs
-  console.log('\n🔧 Fixing ${p0Count} critical bugs...');
+  console.log('\n🔧 Fixing P0_COUNT critical bugs...');
 
   Task(
     subagent_type: 'code-implementer',
-    description: `Fix P0 bugs for {task-name} iteration ${iteration}`,
+    description: `Fix P0 bugs for {task-name} iteration ITERATION_NUM`,
     prompt: `
       Fix the following P0 (Critical) bugs found in bug analysis:
 
-      Bug Report: .claude-project/tasks/{task-name}/BUGS-ITERATION-${iteration}.md
+      Bug Report: .claude-project/tasks/{task-name}/BUGS-ITERATION-ITERATION_NUM.md
 
       Focus ONLY on P0 (Critical) bugs. Fix them according to the recommended solutions in the report.
 
@@ -866,14 +866,14 @@ while (iteration <= MAX_ITERATIONS) {
     `
   );
 
-  console.log('✅ P0 bugs fixed (iteration ${iteration})');
+  console.log('✅ P0 bugs fixed (iteration ITERATION_NUM)');
 
   // Update SUMMARY.md with iteration progress
   updateSummary(`
-    ### Iteration ${iteration}:
-    - Bugs found: ${p0Count} P0, ${p1Count} P1, ${p2Count} P2
-    - Action: Fixed ${p0Count} P0 bugs
-    - Report: BUGS-ITERATION-${iteration}.md
+    ### Iteration ITERATION_NUM:
+    - Bugs found: P0_COUNT P0, P1_COUNT P1, P2_COUNT P2
+    - Action: Fixed P0_COUNT P0 bugs
+    - Report: BUGS-ITERATION-ITERATION_NUM.md
   ');
 
   // Step 6: Increment and continue
@@ -889,7 +889,7 @@ while (iteration <= MAX_ITERATIONS) {
       ## Phase 3: Bug Hunting ⚠️ (INCOMPLETE)
 
       **Status**: Reached maximum iterations (${MAX_ITERATIONS})
-      **Remaining P0 Bugs**: ${p0Count}
+      **Remaining P0 Bugs**: P0_COUNT
 
       ⚠️  MANUAL REVIEW REQUIRED
 
@@ -1117,9 +1117,9 @@ const testFiles = fs.readdirSync(__dirname)
   .filter(file => /^\d{2}-.+\.js$/.test(file))
   .sort();
 
-console.log('\n${'='.repeat(60)}');
-console.log('Running ${testFiles.length} test files sequentially');
-console.log(${'='.repeat(60)}\n');
+console.log('\n====...');
+console.log('Running TEST_COUNT test files sequentially');
+console.log(====...\n');
 
 let passed = 0;
 let failed = 0;
@@ -1145,13 +1145,13 @@ async function runTest(file) {
     await runTest(file);
   }
 
-  console.log('\n${'='.repeat(60)}');
+  console.log('\n====...');
   console.log('TEST SUMMARY');
-  console.log(${'='.repeat(60)}');
-  console.log('Total: ${testFiles.length}');
+  console.log(====...');
+  console.log('Total: TEST_COUNT');
   console.log('Passed: ${passed} ✅');
   console.log('Failed: ${failed} ❌');
-  console.log(${'='.repeat(60)}\n');
+  console.log(====...\n');
 
   process.exit(failed > 0 ? 1 : 0);
 })();
@@ -1408,9 +1408,9 @@ let fixIteration = 1;
 const MAX_FIX_ITERATIONS = 3;
 
 while (fixIteration <= MAX_FIX_ITERATIONS) {
-  console.log('\n${'='.repeat(60)}');
+  console.log('\n====...');
   console.log('🔧 Test Fix - Iteration ${fixIteration}');
-  console.log(${'='.repeat(60)}\n');
+  console.log(====...\n');
 
   // Step 1: Analyze test failures
   console.log('📊 Analyzing test failures...\n');
@@ -1717,9 +1717,9 @@ See TEST-FIX-PLAN-{N}.md
 ### Step 2: Final Console Output
 
 ```
-${'='.repeat(60)}
+====...
 🎉 TASK {task-name} COMPLETED!
-${'='.repeat(60)}
+====...
 
 Summary:
   Business Analysis:     ✅ Complete
@@ -1747,7 +1747,7 @@ Files Changed: {count}
 
 Next: Review changes and create PR
 
-${'='.repeat(60)}
+====...
 ```
 
 ### Step 3: Sync to Git Worktrees
