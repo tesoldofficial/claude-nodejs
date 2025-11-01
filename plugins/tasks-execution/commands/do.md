@@ -778,7 +778,7 @@ const MAX_ITERATIONS = 5;
 while (iteration <= MAX_ITERATIONS) {
   console.log('\n====...');
   console.log('🐛 Bug Hunting - Iteration ITERATION_NUM');
-  console.log(====...\n');
+  console.log('====...\n');
 
   // Step 1: Run bug-hunter-analyzer
   bugReport = Task(
