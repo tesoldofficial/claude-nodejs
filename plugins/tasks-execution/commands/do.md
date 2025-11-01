@@ -11,7 +11,7 @@ Complete end-to-end task implementation: business analysis → architecture → 
 ### Step 1: Parse Command Arguments
 
 '''
-/do <task-name> [description or "начни заново"]
+/tasks-execution:do <task-name> [description or "начни заново"]
 '''
 
 **Examples**:
@@ -353,15 +353,15 @@ if [ ! -f ${projectDocsPath}/ABOUT.md ]; then
     echo ""
   fi
 
-  echo "Recommendation: Run /init-project for ${parentBranch} branch first."
+  echo "Recommendation: Run /tasks-execution:init-project for ${parentBranch} branch first."
   echo ""
 
   # Ask user what to do
   AskUserQuestion:
     Question: "Project documentation missing for ${parentBranch}. How to create it?"
     Options:
-      - "Switch to ${parentBranch} and run /init-project" → Checkout parent, init, return
-      - "Run /init-project based on another branch" → DIFF MODE from selected branch
+      - "Switch to ${parentBranch} and run /tasks-execution:init-project" → Checkout parent, init, return
+      - "Run /tasks-execution:init-project based on another branch" → DIFF MODE from selected branch
       - "Continue without context (not recommended)" → Warning only
       - "Cancel task" → Exit
 
@@ -369,7 +369,7 @@ if [ ! -f ${projectDocsPath}/ABOUT.md ]; then
     echo "🔄 Switching to ${parentBranch}..."
     git checkout ${parentBranch}
 
-    # Execute /init-project
+    # Execute /tasks-execution:init-project
     /init-project
 
     # Return to task branch
@@ -380,7 +380,7 @@ if [ ! -f ${projectDocsPath}/ABOUT.md ]; then
   } else if (choice == "init-from-other") {
     if [ -z "$otherBranchDocs" ]; then
       echo "❌ No other branch docs available"
-      echo "   Please run /init-project in ${parentBranch} first"
+      echo "   Please run /tasks-execution:init-project in ${parentBranch} first"
       exit 1
     fi
 
@@ -396,7 +396,7 @@ if [ ! -f ${projectDocsPath}/ABOUT.md ]; then
     # Switch to parent branch
     git checkout ${parentBranch}
 
-    # Run /init-project (will use DIFF MODE from selectedBase)
+    # Run /tasks-execution:init-project (will use DIFF MODE from selectedBase)
     /init-project
 
     # Return to task branch
@@ -1785,12 +1785,12 @@ Next: Review changes and create PR
 
 Claude Code works best with project context.
 
-Recommendation: Run /init-project first to create:
+Recommendation: Run /tasks-execution:init-project first to create:
 - .claude-project/project/ABOUT.md
 - Business context, architecture, tech stack docs
 
 Options:
-1. Run /init-project now (takes 10-15 minutes)
+1. Run /tasks-execution:init-project now (takes 10-15 minutes)
 2. Continue without context (not recommended)
 3. Cancel this task
 
