@@ -10,21 +10,21 @@ Complete end-to-end task implementation: business analysis → architecture → 
 
 ### Step 1: Parse Command Arguments
 
-```
+'''
 /do <task-name> [description or "начни заново"]
-```
+'''
 
 **Examples**:
-- `/do AUTH-123` - Resume existing or start new
-- `/do AUTH-123 Implement JWT authentication` - Start with description
-- `/do AUTH-123 начни заново` - Restart existing task from scratch
-- `/do user-login` - Start new task (no description)
+- '/do AUTH-123' - Resume existing or start new
+- '/do AUTH-123 Implement JWT authentication' - Start with description
+- '/do AUTH-123 начни заново' - Restart existing task from scratch
+- '/do user-login' - Start new task (no description)
 
 ### Step 2: Validate Task Name
 
-**CRITICAL**: Check if `<task-name>` is actually a description (invalid):
+**CRITICAL**: Check if '<task-name>' is actually a description (invalid):
 
-```javascript
+'''javascript
 function isTaskDescription(name) {
   // Invalid if:
   // - Too long (> 50 chars)
@@ -39,11 +39,11 @@ function isTaskDescription(name) {
 
   return tooLong || isFullSentence || hasPunctuation.test(name);
 }
-```
+'''
 
 **If invalid (user passed description as task name)**:
 
-```markdown
+'''markdown
 ❌ ERROR: Передано описание задачи вместо названия
 
 Вы передали: "{input}"
@@ -66,39 +66,39 @@ function isTaskDescription(name) {
 
 Например:
   /do AUTH-123 "Реализовать JWT авторизацию с refresh токенами"
-```
+'''
 
 **STOP execution** if validation fails.
 
 ### Step 3: Get Current Git Branch
 
-```bash
+'''bash
 currentBranch = $(git branch --show-current 2>/dev/null || echo "not-a-git-repo")
 
 if [ "$currentBranch" = "not-a-git-repo" ]; then
   echo "⚠️  WARNING: Not a git repository"
   echo "   Git branch tracking will be disabled"
 fi
-```
+'''
 
 ### Step 4: Check for "Restart" Command
 
-```javascript
+'''javascript
 const restartKeywords = /начни\s+заново|start\s+over|restart|reset|с\s+нуля/i;
 
 if (description && restartKeywords.test(description)) {
   isRestart = true;
 }
-```
+'''
 
 ### Step 5: Check Existing Task and Branch
 
-```bash
+'''bash
 ls -la .claude-project/tasks/{task-name}/ 2>/dev/null
-```
+'''
 
 **If exists AND isRestart = true:**
-```bash
+'''bash
 # Backup old version
 mv .claude-project/tasks/{task-name} .claude-project/tasks/{task-name}-backup-$(date +%Y%m%d-%H%M%S)
 
@@ -107,10 +107,10 @@ mkdir -p .claude-project/tasks/{task-name}/{files,tests}
 
 # Start from Phase 0
 currentPhase = 0
-```
+'''
 
 **If exists AND isRestart = false:**
-```bash
+'''bash
 # Resume from checkpoint
 # Read SUMMARY.md to determine current phase
 currentPhase = readCheckpoint(.claude-project/tasks/{task-name}/SUMMARY.md)
@@ -154,10 +154,10 @@ if [ "$currentBranch" != "not-a-git-repo" ] && [ "$taskBranch" != "not-a-git-rep
     echo "✅ Branch matches: ${currentBranch}"
   fi
 fi
-```
+'''
 
 **If NOT exists:**
-```bash
+'''bash
 # New task - offer to create git branch
 
 if [ "$currentBranch" != "not-a-git-repo" ]; then
@@ -237,7 +237,7 @@ gitMetadata = {
 
 # Start from Phase 0
 currentPhase = 0
-```
+'''
 
 ---
 
@@ -251,7 +251,7 @@ currentPhase = 0
 
 **IMPORTANT**: Verify parent branch hasn't moved ahead since task creation.
 
-```bash
+'''bash
 if [ "$parentBranch" != "not-a-git-repo" ] && [ -n "$mergeBase" ] && [ "$mergeBase" != "not-applicable" ]; then
   # Check if parent branch has new commits since task started
   parentHead = $(git rev-parse ${parentBranch})
@@ -319,13 +319,13 @@ if [ "$parentBranch" != "not-a-git-repo" ] && [ -n "$mergeBase" ] && [ "$mergeBa
     echo "✅ Parent branch unchanged since task creation"
   fi
 fi
-```
+'''
 
 ### Step 1: Check Project Documentation for Parent Branch
 
 **IMPORTANT**: Verify project documentation exists for parent branch.
 
-```bash
+'''bash
 # Determine documentation path for parent branch
 if [ "$parentBranch" != "not-a-git-repo" ]; then
   projectDocsPath = ".claude-project/project/${parentBranch}"
@@ -412,18 +412,18 @@ if [ ! -f ${projectDocsPath}/ABOUT.md ]; then
 else
   echo "✅ Found project documentation: ${projectDocsPath}/"
 fi
-```
+'''
 
 ### Step 2: Create or Read TASK.md
 
 **If TASK.md exists:**
-```bash
+'''bash
 # Read existing task description
 taskContent = read(.claude-project/tasks/{task-name}/TASK.md)
-```
+'''
 
 **If TASK.md does NOT exist:**
-```bash
+'''bash
 # Create from command description
 if (description provided) {
   write(.claude-project/tasks/{task-name}/TASK.md):
@@ -432,8 +432,8 @@ if (description provided) {
 
     ## Git Metadata
 
-    **Task Branch**: `${taskBranch}`
-    **Parent Branch**: `${parentBranch}`
+    **Task Branch**: '${taskBranch}'
+    **Parent Branch**: '${parentBranch}'
     **Created**: ${timestamp}
 
     > This task is developed relative to parent branch ${parentBranch}.
@@ -459,11 +459,11 @@ if (description provided) {
 
   # Write response to TASK.md with git metadata
 }
-```
+'''
 
 ### Step 3: Read Project Context from Parent Branch
 
-```bash
+'''bash
 if [ -n "$projectDocsPath" ] && [ "$projectDocsPath" != "null" ]; then
   echo "📖 Reading project context from parent branch documentation..."
   echo "   Path: ${projectDocsPath}/"
@@ -481,13 +481,13 @@ else
   echo "⚠️  No project context available"
   projectContext = null
 fi
-```
+'''
 
 ### Step 4: Iterative Business Analysis
 
 **Use iterative reasoning from CLAUDE.md:**
 
-```markdown
+'''markdown
 Iteration 1-20 (until complete clarity):
 
 1. **Question Phase** (ask yourself):
@@ -520,25 +520,25 @@ Iteration 1-20 (until complete clarity):
    - Missing business context
    - Technical choices (which library? which approach?)
    - Priority decisions
-```
+'''
 
 ### Step 4: Finalize TASK.md
 
 Update TASK.md with complete specification:
 
-```markdown
+'''markdown
 # Task: {task-name}
 
 ## Git Metadata
 
-**Task Branch**: `{taskBranch}`
-**Parent Branch**: `{parentBranch}`
-**Merge Base**: `{mergeBaseShort}` (last common commit with parent)
+**Task Branch**: '{taskBranch}'
+**Parent Branch**: '{parentBranch}'
+**Merge Base**: '{mergeBaseShort}' (last common commit with parent)
 **Created**: {timestamp}
 
 > All code analysis (bugs, tests, cleanliness) is relative to merge base.
-> Git diff: `git diff {mergeBase}...{taskBranch}`
-> Project context: `.claude-project/project/{parentBranch}/`
+> Git diff: 'git diff {mergeBase}...{taskBranch}'
+> Project context: '.claude-project/project/{parentBranch}/'
 
 ---
 
@@ -595,11 +595,11 @@ Update TASK.md with complete specification:
 ---
 *Last updated: {timestamp}*
 *Status: Ready for System Design*
-```
+'''
 
 ### Step 5: Update SUMMARY.md (First Checkpoint)
 
-```markdown
+'''markdown
 # Task {task-name} - Progress Summary
 
 ## Current Phase
@@ -626,7 +626,7 @@ Update TASK.md with complete specification:
 
 ---
 *Last updated: {timestamp}*
-```
+'''
 
 ---
 
@@ -638,7 +638,7 @@ Update TASK.md with complete specification:
 
 ### Step 1: Launch system-designer Agent
 
-```
+'''
 Task tool with:
   subagent_type: system-designer
   description: "Design system for {task-name}"
@@ -657,15 +657,15 @@ Task tool with:
 
     Output format: Structured Markdown document
   "
-```
+'''
 
 ### Step 2: Save Output to SYSTEM-DESIGN.md
 
-Agent output → `.claude-project/tasks/{task-name}/SYSTEM-DESIGN.md`
+Agent output → '.claude-project/tasks/{task-name}/SYSTEM-DESIGN.md'
 
 ### Step 3: Update SUMMARY.md
 
-```markdown
+'''markdown
 ## Phase 1: System Design ✅
 
 **Duration**: {minutes} minutes
@@ -683,7 +683,7 @@ Agent output → `.claude-project/tasks/{task-name}/SYSTEM-DESIGN.md`
 - [Decision 2]: [Rationale]
 
 **Next Phase**: Implementation (Phase 2)
-```
+'''
 
 ---
 
@@ -695,7 +695,7 @@ Agent output → `.claude-project/tasks/{task-name}/SYSTEM-DESIGN.md`
 
 ### Step 1: Launch code-implementer Agent
 
-```
+'''
 Task tool with:
   subagent_type: code-implementer
   description: "Implement {task-name}"
@@ -720,11 +720,11 @@ Task tool with:
 
     Write clean, maintainable, tested code.
   "
-```
+'''
 
 ### Step 2: Verify Implementation
 
-```bash
+'''bash
 # Get list of changed files (relative to parent branch)
 if [ "$parentBranch" != "not-a-git-repo" ] && [ "$parentBranch" != "$taskBranch" ]; then
   # Compare against parent branch
@@ -735,11 +735,11 @@ else
   git diff HEAD~1 --name-only > .claude-project/tasks/{task-name}/FILES-CHANGED.txt
   git diff HEAD~1 > .claude-project/tasks/{task-name}/CHANGES.diff
 fi
-```
+'''
 
 ### Step 3: Update SUMMARY.md
 
-```markdown
+'''markdown
 ## Phase 2: Implementation ✅
 
 **Duration**: {minutes} minutes
@@ -757,7 +757,7 @@ fi
 - All methods under 50 lines
 
 **Next Phase**: Bug Hunting (Phase 3)
-```
+'''
 
 ---
 
@@ -771,7 +771,7 @@ fi
 
 ### Iteration Loop
 
-```javascript
+'''javascript
 let iteration = 1;
 const MAX_ITERATIONS = 5;
 
@@ -808,7 +808,7 @@ while (iteration <= MAX_ITERATIONS) {
   );
 
   // Step 2: Save report
-  saveBugReport(`.claude-project/tasks/{task-name}/BUGS-ITERATION-ITERATION_NUM.md');
+  saveBugReport('.claude-project/tasks/{task-name}/BUGS-ITERATION-ITERATION_NUM.md');
 
   // Step 3: Parse bug counts
   const p0Count = bugReport.criticalBugs.length;
@@ -830,7 +830,7 @@ while (iteration <= MAX_ITERATIONS) {
     }
 
     // Update SUMMARY.md with final iteration
-    updateSummary(`
+    updateSummary('
       ## Phase 3: Bug Hunting ✅
 
       **Total Iterations**: ITERATION_NUM
@@ -869,7 +869,7 @@ while (iteration <= MAX_ITERATIONS) {
   console.log('✅ P0 bugs fixed (iteration ITERATION_NUM)');
 
   // Update SUMMARY.md with iteration progress
-  updateSummary(`
+  updateSummary('
     ### Iteration ITERATION_NUM:
     - Bugs found: P0_COUNT P0, P1_COUNT P1, P2_COUNT P2
     - Action: Fixed P0_COUNT P0 bugs
@@ -885,7 +885,7 @@ while (iteration <= MAX_ITERATIONS) {
     console.error('   Manual review recommended.');
     console.error('   See BUGS-ITERATION-${iteration-1}.md for remaining issues.');
 
-    updateSummary(`
+    updateSummary('
       ## Phase 3: Bug Hunting ⚠️ (INCOMPLETE)
 
       **Status**: Reached maximum iterations (${MAX_ITERATIONS})
@@ -899,7 +899,7 @@ while (iteration <= MAX_ITERATIONS) {
     break;
   }
 }
-```
+'''
 
 ---
 
@@ -911,7 +911,7 @@ while (iteration <= MAX_ITERATIONS) {
 
 ### Step 1: Launch code-cleanliness-reviewer Agent
 
-```
+'''
 Task tool with:
   subagent_type: 'code-cleanliness-reviewer'
   description: "Review code cleanliness for {task-name}"
@@ -940,15 +940,15 @@ Task tool with:
 
     Report by severity: Critical, Medium, Low
   "
-```
+'''
 
 ### Step 2: Save Report
 
-Output → `.claude-project/tasks/{task-name}/CLEANLINESS.md`
+Output → '.claude-project/tasks/{task-name}/CLEANLINESS.md'
 
 ### Step 3: Fix Critical Issues (if any)
 
-```javascript
+'''javascript
 if (cleanlinessReport.criticalIssues.length > 0) {
   console.log('\n🧹 Fixing ${cleanlinessReport.criticalIssues.length} critical cleanliness issues...');
 
@@ -970,11 +970,11 @@ if (cleanlinessReport.criticalIssues.length > 0) {
 if (cleanlinessReport.mediumIssues.length > 0) {
   console.log('ℹ️  ${cleanlinessReport.mediumIssues.length} medium cleanliness issues documented but not blocking.');
 }
-```
+'''
 
 ### Step 4: Update SUMMARY.md
 
-```markdown
+'''markdown
 ## Phase 4: Code Cleanliness Review ✅
 
 **Agent**: code-cleanliness-reviewer
@@ -986,7 +986,7 @@ if (cleanlinessReport.mediumIssues.length > 0) {
 - Low: {count} (documented)
 
 **Next Phase**: Test Creation (Phase 5)
-```
+'''
 
 ---
 
@@ -998,7 +998,7 @@ if (cleanlinessReport.mediumIssues.length > 0) {
 
 ### Step 1: Analyze Task Requirements for Test Scenarios
 
-```markdown
+'''markdown
 Read and analyze:
 1. .claude-project/tasks/{task-name}/TASK.md - User stories, scenarios, acceptance criteria
 2. .claude-project/tasks/{task-name}/SYSTEM-DESIGN.md - API endpoints, data flow, error cases
@@ -1009,14 +1009,14 @@ Extract test scenarios:
 - **Edge Cases**: Boundary conditions from acceptance criteria
 - **Error Cases**: Error handling from SYSTEM-DESIGN.md
 - **Integration Flows**: Complete workflows (e.g., register → login → access protected resource)
-```
+'''
 
 ### Step 2: Create Test Structure
 
-Create files in `.claude-project/tasks/{task-name}/tests/`:
+Create files in '.claude-project/tasks/{task-name}/tests/':
 
-**File 1: `package.json`**
-```json
+**File 1: 'package.json'**
+'''json
 {
   "name": "{task-name}-tests",
   "version": "1.0.0",
@@ -1030,10 +1030,10 @@ Create files in `.claude-project/tasks/{task-name}/tests/`:
     "form-data": "^4.0.0"
   }
 }
-```
+'''
 
-**File 2: `helpers.js`**
-```javascript
+**File 2: 'helpers.js'**
+'''javascript
 const axios = require('axios');
 const FormData = require('form-data');
 const fs = require('fs');
@@ -1042,7 +1042,7 @@ const API_URL = process.env.API_URL || 'http://localhost:3000';
 
 // Login and get token
 async function login(email, password) {
-  const response = await axios.post(`${API_URL}/auth/login`, { email, password });
+  const response = await axios.post('${API_URL}/auth/login', { email, password });
   return response.data.token;
 }
 
@@ -1050,8 +1050,8 @@ async function login(email, password) {
 async function apiCall(token, method, endpoint, data = null) {
   const config = {
     method,
-    url: `${API_URL}${endpoint}`,
-    headers: token ? { Authorization: `Bearer ${token}` } : {},
+    url: '${API_URL}${endpoint}',
+    headers: token ? { Authorization: 'Bearer ${token}' } : {},
     data
   };
   return await axios(config);
@@ -1062,10 +1062,10 @@ async function uploadFile(token, endpoint, filePath, fieldName = 'file') {
   const form = new FormData();
   form.append(fieldName, fs.createReadStream(filePath));
 
-  return await axios.post(`${API_URL}${endpoint}`, form, {
+  return await axios.post('${API_URL}${endpoint}', form, {
     headers: {
       ...form.getHeaders(),
-      Authorization: `Bearer ${token}`
+      Authorization: 'Bearer ${token}'
     }
   });
 }
@@ -1073,19 +1073,19 @@ async function uploadFile(token, endpoint, filePath, fieldName = 'file') {
 // Assertions
 function assert(condition, message) {
   if (!condition) {
-    throw new Error(`Assertion failed: ${message}');
+    throw new Error('Assertion failed: ${message}');
   }
 }
 
 function assertEqual(actual, expected, message) {
   if (actual !== expected) {
-    throw new Error(`${message}\nExpected: ${expected}\nActual: ${actual}');
+    throw new Error('${message}\nExpected: ${expected}\nActual: ${actual}');
   }
 }
 
 function assertContains(object, key, value) {
   if (object[key] !== value) {
-    throw new Error(`Expected ${key} to be ${value}, got ${object[key]}');
+    throw new Error('Expected ${key} to be ${value}, got ${object[key]}');
   }
 }
 
@@ -1098,17 +1098,17 @@ module.exports = {
   assertEqual,
   assertContains
 };
-```
+'''
 
-**File 3: `.env.test.example`**
-```env
+**File 3: '.env.test.example'**
+'''env
 API_URL=http://localhost:3000
 TEST_USER_EMAIL=test@example.com
 TEST_USER_PASSWORD=password123
-```
+'''
 
-**File 4: `run-all.js`**
-```javascript
+**File 4: 'run-all.js'**
+'''javascript
 const fs = require('fs');
 const { spawn } = require('child_process');
 
@@ -1155,14 +1155,14 @@ async function runTest(file) {
 
   process.exit(failed > 0 ? 1 : 0);
 })();
-```
+'''
 
 ### Step 3: Generate Test Files
 
 For each test scenario from Step 1, create numbered test file:
 
-**Example: `01-happy-path-{scenario}.js`**
-```javascript
+**Example: '01-happy-path-{scenario}.js'**
+'''javascript
 /**
  * Test: {Scenario Name from TASK.md}
  *
@@ -1215,7 +1215,7 @@ async function test{ScenarioName}() {
 }
 
 test{ScenarioName}();
-```
+'''
 
 **Generate tests for:**
 1. Happy path scenarios (01-*, 02-*)
@@ -1225,49 +1225,49 @@ test{ScenarioName}();
 
 ### Step 4: Create README.md
 
-```markdown
+'''markdown
 # Tests for {task-name}
 
 ## Setup
 
 1. Install dependencies:
-   ```bash
+   '''bash
    npm install
-   ```
+   '''
 
 2. Copy environment template:
-   ```bash
+   '''bash
    cp .env.test.example .env.test
-   ```
+   '''
 
-3. Configure `.env.test` with your test credentials
+3. Configure '.env.test' with your test credentials
 
 ## Test Scenarios
 
 ### Happy Path Tests
-- `01-{scenario}.js` - {Description from TASK.md}
-- `02-{scenario}.js` - {Description}
+- '01-{scenario}.js' - {Description from TASK.md}
+- '02-{scenario}.js' - {Description}
 
 ### Edge Case Tests
-- `10-{scenario}.js` - {Description}
+- '10-{scenario}.js' - {Description}
 
 ### Error Handling Tests
-- `20-{scenario}.js` - {Description}
+- '20-{scenario}.js' - {Description}
 
 ### Integration Flow Tests
-- `30-{scenario}.js` - {Description}
+- '30-{scenario}.js' - {Description}
 
 ## Running Tests
 
 **Run all tests:**
-```bash
+'''bash
 npm test
-```
+'''
 
 **Run specific test:**
-```bash
+'''bash
 npm run test:01
-```
+'''
 
 ## Expected Results
 
@@ -1277,11 +1277,11 @@ If tests fail:
 1. Check API is running on correct URL
 2. Verify test credentials in .env.test
 3. Review error messages for debugging info
-```
+'''
 
 ### Step 5: Update SUMMARY.md
 
-```markdown
+'''markdown
 ## Phase 5: Test Creation ✅
 
 **Test Scenarios Created**: {count}
@@ -1299,7 +1299,7 @@ If tests fail:
 **Tests Location**: tasks/{task-name}/tests/
 
 **Next Phase**: Test Execution (Phase 6)
-```
+'''
 
 ---
 
@@ -1311,7 +1311,7 @@ If tests fail:
 
 ### Step 1: Start Application in Background
 
-```bash
+'''bash
 # Start application (assuming npm start or similar)
 # Use run_in_background to allow tests to run concurrently
 
@@ -1326,32 +1326,32 @@ sleep 5
 
 # Save background process ID for later cleanup
 appProcessId = {bash_id from Bash tool}
-```
+'''
 
 ### Step 2: Install Test Dependencies
 
-```bash
+'''bash
 cd .claude-project/tasks/{task-name}/tests && npm install
-```
+'''
 
 ### Step 3: Run Tests
 
-```bash
+'''bash
 cd .claude-project/tasks/{task-name}/tests && npm test
-```
+'''
 
 **Capture output** for analysis.
 
 ### Step 4: Analyze Results
 
-```javascript
+'''javascript
 if (exitCode === 0) {
   // All tests passed
   console.log('\n✅ ALL TESTS PASSED!\n');
 
   testsPassed = true;
 
-  updateSummary(`
+  updateSummary('
     ## Phase 6: Test Execution ✅
 
     **Result**: All tests passed
@@ -1373,23 +1373,23 @@ if (exitCode === 0) {
   // Parse test output to identify which tests failed
   failedTests = parseFailedTests(testOutput);
 
-  updateSummary(`
+  updateSummary('
     ## Phase 6: Test Execution ❌
 
     **Result**: {failedCount} tests failed
     **Failed Tests**:
-    ${failedTests.map(t => `- ${t.name}: ${t.error}`).join('\n')}
+    ${failedTests.map(t => '- ${t.name}: ${t.error}').join('\n')}
 
     **Next Phase**: Fix Planning (Phase 7)
   ');
 }
-```
+'''
 
 ### Step 5: Cleanup Background Process
 
-```bash
+'''bash
 KillShell(shell_id: appProcessId)
-```
+'''
 
 ---
 
@@ -1403,7 +1403,7 @@ KillShell(shell_id: appProcessId)
 
 ### Iteration Loop
 
-```javascript
+'''javascript
 let fixIteration = 1;
 const MAX_FIX_ITERATIONS = 3;
 
@@ -1425,7 +1425,7 @@ while (fixIteration <= MAX_FIX_ITERATIONS) {
   // Step 2: Create fix plan
   const fixPlan = createFixPlan(analysisReport);
 
-  saveFixPlan(`.claude-project/tasks/{task-name}/TEST-FIX-PLAN-${fixIteration}.md');
+  saveFixPlan('.claude-project/tasks/{task-name}/TEST-FIX-PLAN-${fixIteration}.md');
 
   console.log('\n📋 Fix Plan Created:');
   console.log('\nProblems Identified: ${fixPlan.problems.length}');
@@ -1436,9 +1436,9 @@ while (fixIteration <= MAX_FIX_ITERATIONS) {
 
   // Step 3: Use TodoWrite to show plan to user
   const todoItems = fixPlan.problems.map(p => ({
-    content: `Fix ${p.test}: ${p.issue}`,
+    content: 'Fix ${p.test}: ${p.issue}',
     status: 'pending',
-    activeForm: `Fixing ${p.test}`
+    activeForm: 'Fixing ${p.test}'
   }));
   TodoWrite({ todos: todoItems });
 
@@ -1476,7 +1476,7 @@ while (fixIteration <= MAX_FIX_ITERATIONS) {
   if (testOutput.exitCode === 0) {
     console.log('\n✅ ALL TESTS NOW PASS!\n');
 
-    updateSummary(`
+    updateSummary('
       ## Phase 7: Test Fix ✅
 
       **Fix Iterations**: ${fixIteration}
@@ -1501,7 +1501,7 @@ while (fixIteration <= MAX_FIX_ITERATIONS) {
       console.error('   Manual debugging recommended.');
       console.error('   See TEST-FIX-PLAN-${fixIteration-1}.md for analysis.');
 
-      updateSummary(`
+      updateSummary('
         ## Phase 7: Test Fix ⚠️ (INCOMPLETE)
 
         **Status**: Reached maximum fix iterations (${MAX_FIX_ITERATIONS})
@@ -1519,10 +1519,10 @@ while (fixIteration <= MAX_FIX_ITERATIONS) {
     lastTestOutput = testOutput;
   }
 }
-```
+'''
 
 **Helper: createFixPlan()**
-```javascript
+'''javascript
 function createFixPlan(analysisReport) {
   return {
     problems: analysisReport.failures.map(failure => ({
@@ -1534,10 +1534,10 @@ function createFixPlan(analysisReport) {
     }))
   };
 }
-```
+'''
 
-**Fix Plan Format (`TEST-FIX-PLAN-{N}.md`):**
-```markdown
+**Fix Plan Format ('TEST-FIX-PLAN-{N}.md'):**
+'''markdown
 # Test Fix Plan - Iteration {N}
 
 ## Failed Tests Summary
@@ -1571,7 +1571,7 @@ Total failed: {count}
 ## Implementation Notes
 
 {Any additional context for implementer}
-```
+'''
 
 ---
 
@@ -1583,9 +1583,9 @@ Total failed: {count}
 
 ### Step 1: Compile Complete Summary
 
-Update `.claude-project/tasks/{task-name}/SUMMARY.md` with final comprehensive report:
+Update '.claude-project/tasks/{task-name}/SUMMARY.md' with final comprehensive report:
 
-```markdown
+'''markdown
 # Task {task-name} - COMPLETED ✅
 
 ## Overview
@@ -1712,11 +1712,11 @@ See TEST-FIX-PLAN-{N}.md
 
 *Task completed: {timestamp}*
 *Generated by Claude Code /do command*
-```
+'''
 
 ### Step 2: Final Console Output
 
-```
+'''
 ====...
 🎉 TASK {task-name} COMPLETED!
 ====...
@@ -1748,13 +1748,13 @@ Files Changed: {count}
 Next: Review changes and create PR
 
 ====...
-```
+'''
 
 ### Step 3: Sync to Git Worktrees
 
 **IMPORTANT**: Sync .claude-project/ to all git worktrees.
 
-```bash
+'''bash
 # Execute worktree sync
 ~/.claude/hooks/sync-worktree-claude-project.sh
 
@@ -1766,11 +1766,11 @@ Next: Review changes and create PR
 
 # If worktrees exist, will sync
 # If no worktrees (single directory), will skip
-```
+'''
 
 **Why critical for /do:**
 - Task created in worktree A should be visible in worktree B
-- When you run `/tasks` in any worktree, you see all tasks
+- When you run '/tasks' in any worktree, you see all tasks
 - SUMMARY.md checkpoint works across worktrees
 - Tests can be run from any worktree
 
@@ -1780,7 +1780,7 @@ Next: Review changes and create PR
 
 ### If .claude-project/project/ doesn't exist
 
-```markdown
+'''markdown
 ⚠️  WARNING: Project documentation not found
 
 Claude Code works best with project context.
@@ -1795,11 +1795,11 @@ Options:
 3. Cancel this task
 
 What would you like to do?
-```
+'''
 
 ### If task name validation fails
 
-```markdown
+'''markdown
 ❌ ERROR: Invalid task name
 
 You provided: "{input}"
@@ -1821,11 +1821,11 @@ Please use:
 
 Example:
   /do AUTH-123 "Implement JWT auth with refresh tokens"
-```
+'''
 
 ### If system-designer fails
 
-```markdown
+'''markdown
 ❌ ERROR: System Design phase failed
 
 The system-designer agent encountered an error.
@@ -1841,11 +1841,11 @@ Recommendations:
 3. Try running /do again with clearer description
 
 Error details: {error message}
-```
+'''
 
 ### If tests continuously fail (3+ iterations)
 
-```markdown
+'''markdown
 ⚠️  WARNING: Maximum test-fix iterations reached
 
 After 3 attempts, some tests are still failing.
@@ -1867,7 +1867,7 @@ Would you like to:
 1. Continue with manual debugging
 2. Simplify requirements and restart
 3. Review system design for issues
-```
+'''
 
 ---
 
@@ -1875,9 +1875,9 @@ Would you like to:
 
 ### Example 1: New Task
 
-```bash
+'''bash
 /do AUTH-123 "Implement JWT authentication with access and refresh tokens. Users should be able to login, logout, and refresh their tokens. Tokens expire after 1 hour."
-```
+'''
 
 **Flow:**
 1. Validates "AUTH-123" ✅
@@ -1895,9 +1895,9 @@ Would you like to:
 
 ### Example 2: Resume Existing Task
 
-```bash
+'''bash
 /do AUTH-123
-```
+'''
 
 **Flow:**
 1. Checks tasks/AUTH-123/ exists ✅
@@ -1907,9 +1907,9 @@ Would you like to:
 
 ### Example 3: Restart Task
 
-```bash
+'''bash
 /do AUTH-123 начни заново
-```
+'''
 
 **Flow:**
 1. Detects "начни заново" keyword
@@ -1919,9 +1919,9 @@ Would you like to:
 
 ### Example 4: Invalid Task Name
 
-```bash
+'''bash
 /do "Реализовать JWT авторизацию для пользователей"
-```
+'''
 
 **Flow:**
 1. Validates name → FAILS (too long, starts with verb)
@@ -1929,9 +1929,9 @@ Would you like to:
 3. STOPS execution
 
 **User corrects:**
-```bash
+'''bash
 /do AUTH-123 "Реализовать JWT авторизацию для пользователей"
-```
+'''
 
 ---
 
@@ -1961,7 +1961,7 @@ Use TodoWrite throughout the process to:
 - Display errors/warnings
 
 **Example:**
-```javascript
+'''javascript
 TodoWrite({
   todos: [
     { content: "Phase 0: Business Analysis", status: "completed", activeForm: "Completed" },
@@ -1971,7 +1971,7 @@ TodoWrite({
     // ...
   ]
 });
-```
+'''
 
 ### SUMMARY.md Updates
 
@@ -1990,14 +1990,14 @@ If any agent fails:
 **No automatic commits** - user manages git workflow.
 
 **Track changes:**
-```bash
+'''bash
 git diff > .claude-project/tasks/{task-name}/CHANGES.diff
-```
+'''
 
 ### Background Process Management
 
 Always cleanup background processes:
-```javascript
+'''javascript
 try {
   // Start app
   processId = Bash(command: "npm start", run_in_background: true);
@@ -2009,7 +2009,7 @@ try {
   // Always kill background process
   KillShell(shell_id: processId);
 }
-```
+'''
 
 ---
 
