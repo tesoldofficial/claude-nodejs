@@ -783,7 +783,7 @@ while (iteration <= MAX_ITERATIONS) {
   // Step 1: Run bug-hunter-analyzer
   bugReport = Task(
     subagent_type: 'bug-hunter-analyzer',
-    description: "Analyze code for {task-name} iteration ITERATION_NUM`,
+    description: "Analyze code for {task-name} iteration ITERATION_NUM",
     prompt: "
       Analyze code changes for this task relative to parent branch.
 
@@ -854,7 +854,7 @@ while (iteration <= MAX_ITERATIONS) {
 
   Task(
     subagent_type: 'code-implementer',
-    description: "Fix P0 bugs for {task-name} iteration ITERATION_NUM`,
+    description: "Fix P0 bugs for {task-name} iteration ITERATION_NUM",
     prompt: "
       Fix the following P0 (Critical) bugs found in bug analysis:
 
@@ -954,7 +954,7 @@ if (cleanlinessReport.criticalIssues.length > 0) {
 
   Task(
     subagent_type: 'code-implementer',
-    description: "Fix critical cleanliness issues for {task-name}`,
+    description: "Fix critical cleanliness issues for {task-name}",
     prompt: "
       Fix critical code cleanliness issues:
 
@@ -1447,7 +1447,7 @@ while (fixIteration <= MAX_FIX_ITERATIONS) {
 
   Task(
     subagent_type: 'code-implementer',
-    description: "Fix test failures for {task-name} iteration ${fixIteration}`,
+    description: "Fix test failures for {task-name} iteration ${fixIteration}",
     prompt: "
       Fix the following test failures:
 
