@@ -782,7 +782,7 @@ while (iteration <= MAX_ITERATIONS) {
 
   // Step 1: Run bug-hunter-analyzer
   bugReport = Task(
-    subagent_type: 'bug-hunter-analyzer',
+    subagent_type: 'tasks-execution:bug-hunter-analyzer',
     description: "Analyze code for {task-name} iteration ITERATION_NUM",
     prompt: "
       Analyze code changes for this task relative to parent branch.
@@ -913,7 +913,7 @@ while (iteration <= MAX_ITERATIONS) {
 
 '''
 Task tool with:
-  subagent_type: 'code-cleanliness-reviewer'
+  subagent_type: 'tasks-execution:code-cleanliness-reviewer'
   description: "Review code cleanliness for {task-name}"
   prompt: "
     Review code changes for this task for cleanliness issues.
