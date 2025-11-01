@@ -783,8 +783,8 @@ while (iteration <= MAX_ITERATIONS) {
   // Step 1: Run bug-hunter-analyzer
   bugReport = Task(
     subagent_type: 'bug-hunter-analyzer',
-    description: `Analyze code for {task-name} iteration ITERATION_NUM`,
-    prompt: `
+    description: "Analyze code for {task-name} iteration ITERATION_NUM`,
+    prompt: "
       Analyze code changes for this task relative to parent branch.
 
       Task Context: .claude-project/tasks/{task-name}/TASK.md
@@ -804,7 +804,7 @@ while (iteration <= MAX_ITERATIONS) {
       - Code quality issues
 
       Categorize by priority: P0 (Critical), P1 (High), P2 (Medium)
-    `
+    "
   );
 
   // Step 2: Save report
@@ -854,8 +854,8 @@ while (iteration <= MAX_ITERATIONS) {
 
   Task(
     subagent_type: 'code-implementer',
-    description: `Fix P0 bugs for {task-name} iteration ITERATION_NUM`,
-    prompt: `
+    description: "Fix P0 bugs for {task-name} iteration ITERATION_NUM`,
+    prompt: "
       Fix the following P0 (Critical) bugs found in bug analysis:
 
       Bug Report: .claude-project/tasks/{task-name}/BUGS-ITERATION-ITERATION_NUM.md
@@ -863,7 +863,7 @@ while (iteration <= MAX_ITERATIONS) {
       Focus ONLY on P0 (Critical) bugs. Fix them according to the recommended solutions in the report.
 
       Maintain code quality standards.
-    `
+    "
   );
 
   console.log('✅ P0 bugs fixed (iteration ITERATION_NUM)');
@@ -954,14 +954,14 @@ if (cleanlinessReport.criticalIssues.length > 0) {
 
   Task(
     subagent_type: 'code-implementer',
-    description: `Fix critical cleanliness issues for {task-name}`,
-    prompt: `
+    description: "Fix critical cleanliness issues for {task-name}`,
+    prompt: "
       Fix critical code cleanliness issues:
 
       Report: .claude-project/tasks/{task-name}/CLEANLINESS.md
 
       Fix ONLY critical issues. Maintain functionality.
-    `
+    "
   );
 
   console.log('✅ Critical cleanliness issues fixed');
@@ -1447,14 +1447,14 @@ while (fixIteration <= MAX_FIX_ITERATIONS) {
 
   Task(
     subagent_type: 'code-implementer',
-    description: `Fix test failures for {task-name} iteration ${fixIteration}`,
-    prompt: `
+    description: "Fix test failures for {task-name} iteration ${fixIteration}`,
+    prompt: "
       Fix the following test failures:
 
       Fix Plan: .claude-project/tasks/{task-name}/TEST-FIX-PLAN-${fixIteration}.md
 
       Implement the proposed fixes while maintaining code quality.
-    `
+    "
   );
 
   console.log('✅ Fixes implemented\n');
