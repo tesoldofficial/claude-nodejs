@@ -853,7 +853,7 @@ while (iteration <= MAX_ITERATIONS) {
   console.log('\n🔧 Fixing P0_COUNT critical bugs...');
 
   Task(
-    subagent_type: 'code-implementer',
+    subagent_type: 'tasks-execution:code-implementer',
     description: "Fix P0 bugs for {task-name} iteration ITERATION_NUM",
     prompt: "
       Fix the following P0 (Critical) bugs found in bug analysis:
@@ -953,7 +953,7 @@ if (cleanlinessReport.criticalIssues.length > 0) {
   console.log('\n🧹 Fixing ${cleanlinessReport.criticalIssues.length} critical cleanliness issues...');
 
   Task(
-    subagent_type: 'code-implementer',
+    subagent_type: 'tasks-execution:code-implementer',
     description: "Fix critical cleanliness issues for {task-name}",
     prompt: "
       Fix critical code cleanliness issues:
@@ -1446,7 +1446,7 @@ while (fixIteration <= MAX_FIX_ITERATIONS) {
   console.log('\n🔧 Implementing fixes...\n');
 
   Task(
-    subagent_type: 'code-implementer',
+    subagent_type: 'tasks-execution:code-implementer',
     description: "Fix test failures for {task-name} iteration ${fixIteration}",
     prompt: "
       Fix the following test failures:
